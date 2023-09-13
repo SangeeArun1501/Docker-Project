@@ -43,9 +43,9 @@ pipeline {
    }
     stage('Build mysql image') {
       steps{
-         imageImage = docker.build registry_mysql + ":$BUILD_NUMBER"
+         newImage = docker.build registry_mysql + ":$BUILD_NUMBER"
         withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ])
-         dockerImage.push("dockerImage.push("registry")")
+         newImage.push("registry_mysql")
         }
       }
     stage('Deploy App') {
