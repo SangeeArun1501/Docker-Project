@@ -19,6 +19,7 @@ pipeline {
       steps{
         script {
           dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImage = docker.build registry_mysql + ":$BUILD_NUMBER"
         }
       }
     }
@@ -28,6 +29,7 @@ pipeline {
         script {
           withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
             dockerImage.push("registry")
+            dockerImage.push("registry_mysql")
           }
         }
       }
@@ -42,8 +44,8 @@ pipeline {
    }
    stage('Build mysql image') {
      steps{
-       sh 'docker build -t "10.138.0.3:5001/mgsgoms/mysql:$BUILD_NUMBER"  "$WORKSPACE"/mysql'
-        sh 'docker push "10.138.0.3:5001/mgsgoms/mysql:$BUILD_NUMBER"'
+       sh 'docker build -t "sangeetha1501/mysql:$BUILD_NUMBER"  "$WORKSPACE"/mysql'
+        sh 'docker push "sangeetha1501/mysql:$BUILD_NUMBER"'
         }
       }
     stage('Deploy App') {
