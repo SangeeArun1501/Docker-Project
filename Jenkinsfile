@@ -53,7 +53,7 @@ pipeline {
       steps {
         script {
           sh "cat frontend.yaml"
-          kubernetesDeploy(configs: "frontend.yaml", kubeconfigId: "kube")
+          sh "kubectl apply -f frontend.yaml"
         }
       }
     }
