@@ -45,7 +45,7 @@ pipeline {
      steps{
        sh 'docker build -t "sangeetha1501/mysql:$BUILD_NUMBER"  "$WORKSPACE"/mysql'
        withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
-        bat "docker push sangeetha1501/mysql:$BUILD_NUMBER"
+        sh 'docker push "sangeetha1501/mysql:$BUILD_NUMBER" '
         }
       }
     }
