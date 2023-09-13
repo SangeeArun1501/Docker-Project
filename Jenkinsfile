@@ -4,7 +4,6 @@ pipeline {
     registry = "sangeetha1501/flask"
     registry_mysql = "sangeetha1501/mysql"
     dockerImage = ""
-    newImage = ""
   }
 
   agent any
@@ -45,7 +44,7 @@ pipeline {
      steps{
        sh 'docker build -t "sangeetha1501/mysql:$BUILD_NUMBER"  "$WORKSPACE"/mysql'
        withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
-        sh 'docker push "sangeetha1501/mysql" '
+        sh 'docker push "sangeetha1501/mysql:$BUILD_NUMBER" '
         }
       }
     }
