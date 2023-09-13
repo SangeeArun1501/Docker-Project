@@ -1,8 +1,8 @@
 pipeline {
 
   environment {
-    registry = "10.138.0.3:5001/mgsgoms/flask"
-    registry_mysql = "10.138.0.3:5001/mgsgoms/mysql"
+    registry = "sangeetha1501/flask"
+    registry_mysql = "sangeetha1501/mysql"
     dockerImage = ""
   }
 
@@ -26,8 +26,8 @@ pipeline {
     stage('Push Image') {
       steps{
         script {
-          docker.withRegistry( "" ) {
-            dockerImage.push()
+          withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
+            dockerImage.push("registry")
           }
         }
       }
