@@ -40,13 +40,6 @@ pipeline {
           }
       }
    }
-
-    stage('Initialize'){
-       steps {
-          def dockerHome = tool 'myDocker'
-          env.PATH = "${dockerHome}/bin:${env.PATH}"
-    }
-    }
     stage('Build mysql image') {
       steps{
         sh 'docker build -t "sangeetha1501/mysql:$BUILD_NUMBER"  "$WORKSPACE"/mysql'
