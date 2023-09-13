@@ -47,6 +47,7 @@ pipeline {
             dockerImage.push("registry_mysql")
         }
       }
+    }
     stage('Deploy App') {
       steps {
         script {
