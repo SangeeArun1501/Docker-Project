@@ -16,7 +16,7 @@ spec:
       app: frontend
    spec:
     containers:
-    - image: sangeetha1501/flask
+    - image: sangeetha1501/flask:86
       name: frontend
     imagePullSecrets:
     - name: deploysecret  
@@ -51,7 +51,7 @@ spec:
           run: backend
      spec:
         containers:
-        - image: sangeetha1501/mysql
+        - image: sangeetha1501/mysql:86
           imagePullPolicy: IfNotPresent
           args: ["--default-authentication-plugin=mysql_native_password"]
           name: backend
