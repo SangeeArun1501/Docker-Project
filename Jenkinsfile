@@ -27,7 +27,7 @@ pipeline {
       steps{
         script {
           withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
-            dockerImage.push("sangeetha1501/flask:$BUILD_NUMBER")
+            dockerImage.push("registry:$BUILD_NUMBER")
           }
         }
       }
