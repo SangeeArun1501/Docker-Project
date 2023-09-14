@@ -27,7 +27,7 @@ pipeline {
       steps{
         script {
           withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
-            dockerImage.push("registry:$BUILD_NUMBER")
+            dockerImage.push()
           }
         }
       }
