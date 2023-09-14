@@ -27,7 +27,7 @@ pipeline {
       steps{
         script {
           withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
-            dockerImage.push("sangeetha1501/mysql:$BUILD_NUMBER")
+            dockerImage.push("sangeetha1501/flask:$BUILD_NUMBER")
           }
         }
       }
