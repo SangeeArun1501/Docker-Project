@@ -18,7 +18,7 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImage = docker.build registry 
         }
       }
     }
@@ -42,9 +42,9 @@ pipeline {
    }
     stage('Build mysql image') {
      steps{
-       sh 'docker build -t "sangeetha1501/mysql:$BUILD_NUMBER"  "$WORKSPACE"/mysql'
+       sh 'docker build -t "sangeetha1501/mysql"  "$WORKSPACE"/mysql'
        withDockerRegistry([ credentialsId: "sangeethaDockerHub", url: "" ]) {
-        sh 'docker push "sangeetha1501/mysql:$BUILD_NUMBER" '
+        sh 'docker push "sangeetha1501/mysql" '
         }
       }
     }
