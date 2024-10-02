@@ -12,9 +12,9 @@ pipeline {
         stage('Build Images') {
             steps {
                 script {
-                    sh 'docker build -t $(dockerhub.username)/flaskapp .'
+                    sh 'docker build -t ${dockerhub.username}/flaskapp .'
                     dir('mysql') {
-                      sh 'docker build -t $(dockerhub.username)/mysql .'
+                      sh 'docker build -t ${dockerhub.username}/mysql .'
                     }
                 }
             }
