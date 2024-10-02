@@ -30,12 +30,9 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // Use withDockerRegistry for pushing images
-                    withDockerRegistry([ credentialsId: 'dockerhub', url: '' ]) {
-                        // Push the Flask image
-                        flaskImage.push()
-                        // Push the MySQL image
-                        mysqlImage.push()
+                    echo "Pushing images without Docker Registry"
+                    flaskImage.push()
+                    mysqlImage.push()
                     }
                 }
             }
