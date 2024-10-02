@@ -12,8 +12,8 @@ pipeline {
           dir('mysql') {
             sh 'docker build -t mysql .'
           }
-          sh 'docker run --name flaskapp --network mynetwork -p 8081:8080 -d flaskapp'
-          sh 'docker run --name mysql --network mynetwork -p 3307:3306 -d mysql'
+          sh 'docker run --name flaskapp --network my_network -p 8081:8080 -d flaskapp'
+          sh 'docker run --name mysql --network my_network -p 3307:3306 -d mysql'
         }
       }
   }
