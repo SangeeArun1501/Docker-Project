@@ -12,30 +12,29 @@ pipeline {
             }
         }
         stage('Build code') {
-            steps {
-                script {
-                    // Declare the image variables outside for later use
-                    def flaskImage
-                    def mysqlImage
-
-                    // Build the images
-                    flaskImage = docker.build(DOCKER_IMAGE_FLASK)
-                    dir('mysql') {
-                        mysqlImage = docker.build(DOCKER_IMAGE_MYSQL)
+        steps {
+          script {
+           def flaskImage = docker.build(DOCKER_IMAGE_FLASK)
+          dir('mysql') {
+           def mysqlImage = docker.build(DOCKER_IMAGE_MYSQL)
                     }
-                    echo 'Image Build Complete'
+          echo 'Image Build Complete'
                 }
             }
-        }
-        stage('Push to Docker Hub') {
+      }
+      stage('Push to Docker Hub') {
             steps {
                 script {
-                    echo "Pushing images without Docker Registry"
-                    flaskImage.push()
-                    mysqlImage.push()
+                    // Use withDockerRegistry for pushing images
+                    withDockerRegistry([ credentialsId: 'dockerhub', url: '' ]) {
+                        // Push the Flask image
+                        flaskImage.push()
+                        // Push the MySQL image
+                        mysqlImage.push()
                     }
                 }
             }
         }
-    }
+}
+}
 
