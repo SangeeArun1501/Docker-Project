@@ -2,8 +2,8 @@ pipeline {
   agent any
   environment {
     DOCKER_CRED = credentials('dockerhub')
-    DOCKER_IMAGE_FLASK = 'sangeetha1501/flaskapp'
-    DOCKER_IMAGE_MYSQL = 'sangeetha1501/mysql'
+    DOCKER_IMAGE_FLASK = '${DOCKER_USERNAME}/flaskapp'
+    DOCKER_IMAGE_MYSQL = '${DOCKER_USERNAME}/mysql'
   }
     stages {
     stage('Checkout Source') {
@@ -22,7 +22,7 @@ pipeline {
       }
       stage('Push to Dockerhub') {
         steps {
-          sh "echo ${DOCKER_CRED} | docker login -u ${DOCKER_CRED} --password-stdin"
+          sh "echo ${DOCKER_CRED_PASSWORD} | docker login -u ${DOCKER_CRED_USERNAME} --password-stdin"
           echo 'login successful'
           sh "docker push ${DOCKER_IMAGE_FLASK}"
           sh "docker push ${DOCKER_IMAGE_MYSQL}"
