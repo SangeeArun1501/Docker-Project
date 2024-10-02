@@ -8,7 +8,7 @@ pipeline {
     }
       stage('Build code') {
         steps {
-          def customImage = docker.build("flaskapp:latest")
+          sh 'docker build -t flaskapp .'
         }
       }
   }
