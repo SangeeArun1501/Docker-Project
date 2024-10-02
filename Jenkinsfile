@@ -9,6 +9,9 @@ pipeline {
       stage('Build code') {
         steps {
           sh 'docker build -t flaskapp .'
+          dir('flask') {
+            sh 'docker build -t mysql .'
+          }
         }
       }
   }
