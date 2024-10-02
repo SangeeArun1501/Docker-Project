@@ -12,12 +12,14 @@ pipeline {
     }
       stage('Build code') {
         steps {
-          sh 'docker build -t ${DOCKER_IMAGE_FLASK} .'
+          script {
+           def flaskImage = docker.build(DOCKER_IMAGE_FLASK)
           dir('mysql') {
-            sh 'docker build -t ${DOCKER_IMAGE_MYSQL} .'
-          }
-          echo ' Image Build Complete'
-        }
+           def mysqlImage = docker.build(DOCKER_IMAGE_MYSQL)
+                    }
+          echo 'Image Build Complete'
+                }
+            }
       }
       stage('Push to Dockerhub') {
         steps {
