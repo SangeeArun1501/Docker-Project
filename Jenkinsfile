@@ -1,6 +1,7 @@
 pipeline {
   agent any
   environment {
+    DOCKER_CRED = credentials('dockerhub')
     DOCKER_IMAGE_FLASK = 'sangeetha1501/flaskapp'
     DOCKER_IMAGE_MYSQL = 'sangeetha1501/mysql'
   }
@@ -21,5 +22,18 @@ pipeline {
                 }
             }
       }
+      stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Use withDockerRegistry for pushing images
+                    withDockerRegistry([ credentialsId: 'dockerhub', url: '' ]) {
+                        // Push the Flask image
+                        flaskImage.push()
+                        // Push the MySQL image
+                        mysqlImage.push()
+                    }
+                }
+            }
+        }
 }
 }
