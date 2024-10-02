@@ -1,5 +1,10 @@
 pipeline {
   agent any
+  environment {
+    DOCKER_CRED = credentials('dockerhub')
+    DOCKER_IMAGE_FLASK = 'sangeetha1501/flaskapp'
+    DOCKER_IMAGE_MYSQL = 'sangeetha1501/mysql'
+  }
     stages {
     stage('Checkout Source') {
       steps {
@@ -8,14 +13,21 @@ pipeline {
     }
       stage('Build code') {
         steps {
-          sh 'docker build -t flaskapp .'
+          sh 'docker build -t ${DOCKER_IMAGE_FLASK} .'
           dir('mysql') {
-            sh 'docker build -t mysql .'
+            sh 'docker build -t ${DOCKER_IMAGE_MYSQL} .'
           }
-          sh 'docker run --name flaskapp --network my_network -p 8081:8080 -d flaskapp'
-          sh 'docker run --name mysql --network my_network -p 3307:3306 -d mysql'
+          echo ' Image Build Complete'
         }
       }
+      stage('Push to Dockerhub') {
+        steps {
+          sh "echo ${DOCKER_CRED} | docker login -u ${DOCKER_CRED} --password-stdin"
+          echo 'login successful'
+          sh "docker push ${DOCKER_IMAGE_FLASK}"
+          sh "docker push ${DOCKER_IMAGE_MYSQL}"
+        }
   }
 
+}
 }
