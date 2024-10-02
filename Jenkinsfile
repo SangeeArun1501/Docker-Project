@@ -2,8 +2,8 @@ pipeline {
   agent any
   environment {
     DOCKER_CRED = credentials('dockerhub')
-    DOCKER_IMAGE_FLASK = '${DOCKER_CRED.USERNAME}/flaskapp'
-    DOCKER_IMAGE_MYSQL = '${DOCKER_CRED.USERNAME}/mysql'
+    DOCKER_IMAGE_FLASK = 'sangeetha1501/flaskapp'
+    DOCKER_IMAGE_MYSQL = 'sangeetha1501/mysql'
   }
     stages {
     stage('Checkout Source') {
