@@ -17,15 +17,16 @@ pipeline {
                 script {
                     echo 'Building Flask image...'
                     def flaskImage = docker.build(DOCKER_IMAGE_FLASK)
-                    
+
+                    echo 'Building MySQL image...'
                     dir('mysql') {
-                        echo 'Building MySQL image...'
                         def mysqlImage = docker.build(DOCKER_IMAGE_MYSQL)
+                        // Store mysqlImage in a global variable to access later
+                        currentBuild.rawBuild.getAction(hudson.model.ParametersAction.class)?.getParameters().add(new hudson.model.StringParameterValue('mysqlImage', mysqlImage.imageName))
                     }
-                    
+
                     echo 'Image Build Complete'
-                    echo "Flask Image: ${flaskImage}"
-                    echo "MySQL Image: ${mysqlImage}"
+                    echo "Flask Image: ${flaskImage.imageName}"
                 }
             }
         }
@@ -33,8 +34,10 @@ pipeline {
             steps {
                 script {
                     echo 'Starting Docker push process...'
-                    
-                    // Authenticate and push the images
+
+                    // Get the MySQL image name from parameters
+                    def mysqlImage = currentBuild.rawBuild.getAction(hudson.model.ParametersAction.class)?.getParameters()?.find { it.name == 'mysqlImage' }?.value
+
                     withDockerRegistry([ credentialsId: 'dockerhub', url: '' ]) {
                         try {
                             echo 'Pushing Flask image...'
@@ -43,11 +46,15 @@ pipeline {
                         } catch (Exception e) {
                             echo "Error pushing Flask image: ${e.getMessage()}"
                         }
-                        
+
                         try {
                             echo 'Pushing MySQL image...'
-                            mysqlImage.push()
-                            echo 'MySQL image pushed successfully.'
+                            if (mysqlImage) {
+                                docker.image(mysqlImage).push()
+                                echo 'MySQL image pushed successfully.'
+                            } else {
+                                echo 'MySQL image not available to push.'
+                            }
                         } catch (Exception e) {
                             echo "Error pushing MySQL image: ${e.getMessage()}"
                         }
