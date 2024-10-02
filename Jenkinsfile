@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        DOCKER_CRED = credentials('dockerhub')
         FLASK_IMAGE = 'sangeetha1501/flaskapp'
         MYSQL_IMAGE = 'sangeetha1501/mysql'
     }
@@ -14,7 +13,6 @@ pipeline {
         stage('Build Images') {
             steps {
                 script {
-                    // Build the images
                     docker.build(FLASK_IMAGE)
                     dir('mysql') {
                         docker.build(MYSQL_IMAGE)
@@ -25,8 +23,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CRED) {
-                        // Push the images
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
                         docker.image(FLASK_IMAGE).push()
                         docker.image(MYSQL_IMAGE).push()
                     }
