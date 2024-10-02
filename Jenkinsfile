@@ -25,7 +25,8 @@ pipeline {
         steps {
           script {
           withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
-            dockerImage.push()
+            flaskImage.push()
+            mysqlImage.push()
           }
         }
   }
