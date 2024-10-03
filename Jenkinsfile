@@ -21,7 +21,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     script {
                         sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                        echo 'building'
+                        echo 'Building Flask App'
                         sh "docker build -t ${DOCKER_USERNAME}/flaskapp ."
                         dir('mysql') {
                             sh "docker build -t ${DOCKER_USERNAME}/mysql ."
@@ -38,7 +38,7 @@ pipeline {
                         withSonarQubeEnv('sonarqube') {
                             sh """
                             docker run --rm \
-                            -e SONAR_HOST_URL='http://34.86.78.37:9000' 
+                            -e SONAR_HOST_URL='http://34.86.78.37:9000' \
                             -e SONAR_TOKEN='${SONAR_TOKEN}' \
                             -v \$(pwd):/src \
                             sonarsource/sonar-scanner-cli \
@@ -56,7 +56,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     script {
                         sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                        echo 'Pushing'
+                        echo 'Pushing Images'
                         sh "docker push ${DOCKER_USERNAME}/flaskapp"
                         sh "docker push ${DOCKER_USERNAME}/mysql"
                     }
