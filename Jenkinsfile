@@ -6,7 +6,7 @@ pipeline {
                 git 'https://github.com/SangeeArun1501/Docker-Project.git'
             }
         }
-         stage('SonarQube Scan') {
+        stage('SonarQube Scan') {
             steps {
                 script {
                     // Run SonarQube Scanner for source code
@@ -34,19 +34,19 @@ pipeline {
             steps {
                 script {
                     // Run SonarQube Scanner for Docker image
-                    withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'your_sonarqube_token_id', variable: 'SONAR_TOKEN')]) {
                         withSonarQubeEnv('SonarQube') {
-                        
                             sh """
                             docker run --rm \
-                            -e SONAR_HOST_URL='http://34.86.78.37:9000' \
+                            -e SONAR_HOST_URL='http://<your-sonarqube-url>' \ // Replace with actual URL
                             -e SONAR_TOKEN='${SONAR_TOKEN}' \
                             -v \$(pwd):/src \
                             sonarsource/sonar-scanner-cli \
                             sonar-scanner \
                             -Dsonar.projectKey=jenkins_integration \
                             -Dsonar.sources=/src
-                    """
+                            """
+                        }
                     }
                 }
             }
@@ -59,7 +59,6 @@ pipeline {
                         echo 'Pushing'
                         sh "docker push ${DOCKER_USERNAME}/flaskapp"
                         sh "docker push ${DOCKER_USERNAME}/mysql"
-                        }
                     }
                 }
             }
