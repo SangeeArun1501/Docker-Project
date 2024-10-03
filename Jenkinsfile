@@ -30,7 +30,28 @@ pipeline {
                 }
             }
         }
-        stage('Build Images') {
+        stage('SonarQube Image Scan') {
+            steps {
+                script {
+                    // Run SonarQube Scanner for Docker image
+                    withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
+                        withSonarQubeEnv('SonarQube') {
+                        
+                            sh """
+                            docker run --rm \
+                            -e SONAR_HOST_URL='http://34.86.78.37:9000' \
+                            -e SONAR_TOKEN='${SONAR_TOKEN}' \
+                            -v \$(pwd):/src \
+                            sonarsource/sonar-scanner-cli \
+                            sonar-scanner \
+                            -Dsonar.projectKey=jenkins_integration \
+                            -Dsonar.sources=/src
+                    """
+                    }
+                }
+            }
+        }
+        stage('Push Images') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     script {
