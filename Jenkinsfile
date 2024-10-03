@@ -9,7 +9,8 @@ pipeline {
 
         stage('Verify Sonar Scanner') {
             steps {
-                sh 'sonar-scanner --version'  // Verify if the sonar-scanner is available
+                 def sonarScannerPath = '/opt/sonar-scanner/bin/sonar-scanner' // Change this to your scanner path
+                    sh "${sonarScannerPath} --version"  // Verify if the sonar-scanner is available
             }
         }
     }
