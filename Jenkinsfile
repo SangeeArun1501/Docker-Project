@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     // Run SonarQube Scanner for source code
-                    withSonarQubeEnv('SonarQube') {
+                    withSonarQubeEnv('sonarqube') {
                         sh 'sonar-scanner -Dsonar.projectKey=jenkins_integration -Dsonar.sources=.'
                     }
                 }
@@ -35,7 +35,7 @@ pipeline {
                 script {
                     // Run SonarQube Scanner for Docker image
                     withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
-                        withSonarQubeEnv('SonarQube') {
+                        withSonarQubeEnv('sonarqube') {
                             sh """
                             docker run --rm \
                             -e SONAR_HOST_URL='http://34.86.78.37:9000' 
