@@ -6,6 +6,14 @@ pipeline {
                 git 'https://github.com/SangeeArun1501/Docker-Project.git'
             }
         }
+        stage('Set Path for Sonar Scanner') {
+            steps {
+                script {
+                    // Update PATH to include the Sonar Scanner directory
+                    env.PATH = "/opt/sonar-scanner/bin:${env.PATH}"
+                }
+            }
+        }
         stage('Verify Sonar Scanner') {
             steps {
                 sh 'sonar-scanner --version'  // Verify if the sonar-scanner is available
