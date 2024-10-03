@@ -11,7 +11,7 @@ pipeline {
                 script {
                     // Run SonarQube Scanner for source code
                     withSonarQubeEnv('sonarqube') {
-                        sh 'sonar-scanner -Dsonar.projectKey=jenkins_integration -Dsonar.sources=.'
+                        sh 'sonar-scanner -Dsonar.projectKey=jenkins_integration -Dsonar.sources=flask,mysql'
                     }
                 }
             }
