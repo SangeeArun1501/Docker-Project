@@ -6,29 +6,31 @@ pipeline {
                 git 'https://github.com/SangeeArun1501/Docker-Project.git'
             }
         }
-        stage('Set Path for Sonar Scanner') {
-            steps {
-                script {
-                    // Update PATH to include the Sonar Scanner directory
-                    env.PATH = "/opt/sonar-scanner/bin:${env.PATH}"
-                }
-            }
-        }
+
         stage('Verify Sonar Scanner') {
             steps {
                 sh 'sonar-scanner --version'  // Verify if the sonar-scanner is available
             }
         }
+
         stage('SonarQube Scan') {
             steps {
                 script {
                     // Run SonarQube Scanner for source code
                     withSonarQubeEnv('sonarqube') {
-                        sh 'sonar-scanner -Dsonar.projectKey=jenkins_integration -Dsonar.sources=flask,mysql'
+                        sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=jenkins_integration \
+                        -Dsonar.projectVersion=1.0 \
+                        -Dsonar.sources=flask,mysql \
+                        -Dsonar.host.url='http://34.86.78.37:9000' \
+                        -Dsonar.login=${env.SONAR_TOKEN}
+                        """
                     }
                 }
             }
         }
+
         stage('Build Images') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -43,6 +45,7 @@ pipeline {
                 }
             }
         }
+
         stage('SonarQube Image Scan') {
             steps {
                 script {
@@ -64,6 +67,7 @@ pipeline {
                 }
             }
         }
+
         stage('Push Images') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
