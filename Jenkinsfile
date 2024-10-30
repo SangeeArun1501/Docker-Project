@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SERVER = 'http://34.42.249.65:9000'
+        SONARQUBE_SERVER = 'http://34.48.73.26:9000'
         SONARQUBE_TOKEN = credentials('sonarqube')
         PATH = "${PATH}:/opt/sonar-scanner/bin"
         DOCKER_CREDENTIALS = 'dockerhub'
