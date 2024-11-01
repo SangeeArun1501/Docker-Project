@@ -19,18 +19,8 @@ pipeline {
             steps {
                 script {
                     echo "Building Flask Docker image..."
-                    sh "docker build -t ${IMAGE_NAME_FLASK} ."
+                    sh "docker ps"
                     echo "Flask Docker image built successfully."
-                }
-            }
-        }
-
-        stage('Build MySQL Docker Image') {
-            steps {
-                script {
-                    echo "Building MySQL Docker image..."
-                    sh "docker build -t ${IMAGE_NAME_MYSQL} -f mysql/Dockerfile mysql/"
-                    echo "MySQL Docker image built successfully."
                 }
             }
         }
