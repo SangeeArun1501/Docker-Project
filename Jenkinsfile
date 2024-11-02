@@ -11,12 +11,15 @@ pipeline {
         stage('Check Docker Access') {
             steps {
                 script {
-                    echo "Checking Docker access..."
-                    // Check Docker access by running a simple command
-                    sh 'docker info'
+                    echo "Checking Docker access..."            
+                    try {
+                        sh 'docker info'
+                        } catch (Exception e) {
+                        echo "Docker access failed: ${e.message}"
+                        error("Docker access check failed.")
+                        }
                 }
             }
         }
     }
 }
-
