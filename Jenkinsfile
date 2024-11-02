@@ -8,14 +8,15 @@ pipeline {
                 git url: 'https://github.com/SangeeArun1501/Docker-Project.git'
             }
         }
-    }
-
-    post {
-        success {
-            echo "Checkout completed successfully!"
-        }
-        failure {
-            echo "Checkout failed!"
+        stage('Check Docker Access') {
+            steps {
+                script {
+                    echo "Checking Docker access..."
+                    // Check Docker access by running a simple command
+                    sh 'docker info'
+                }
+            }
         }
     }
 }
+
