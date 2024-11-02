@@ -19,7 +19,11 @@ pipeline {
             steps {
                 script {
                     echo "Building Flask Docker image..."
-                    sh "docker ps"
+                    // Enable debugging to see more details in logs
+                    sh '''
+                    set -x  # Enable debugging
+                    docker build -t ${IMAGE_NAME_FLASK} .
+                    '''
                     echo "Flask Docker image built successfully."
                 }
             }
