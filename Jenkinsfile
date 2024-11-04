@@ -2,13 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Check Docker Access') {
+        stage('Test Docker') {
             steps {
                 script {
-                    echo "Checking Docker access..."
-                    docker.image('alpine').inside {
-                        sh 'echo "Docker is working!"'
-                    }
+                    sh 'docker info'
                 }
             }
         }
