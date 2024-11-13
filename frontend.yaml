@@ -30,6 +30,21 @@ spec:
           value: "MYUsers"
 
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+spec:
+  selector:
+    app: flaskapp
+  ports:
+    - protocol: TCP
+      port: 80  # External port for the Flask app
+      targetPort: 8080  # Flask container's internal port
+  type: NodePort  # Ensure the service type is NodePort
+  nodePort: 30080  # Specify the NodePort
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -61,27 +76,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service
-spec:
-  selector:
-    app: flaskapp
-  ports:
-    - protocol: TCP
-      port: 80  # External port for the Flask app
-      targetPort: 8080  # Flask container's internal port
-  type: NodePort  # Exposes the Flask service on a random high port
-  nodePort: 30080  # You can specify a specific port or let Kubernetes choose
-
----
-apiVersion: v1
-kind: Service
-metadata:
   name: mysql-service
 spec:
   selector:
     app: mysql
   ports:
     - protocol: TCP
-      port: 3306  # MySQL service's external port
-      targetPort: 3306  # MySQL container's internal port
-  type: ClusterIP  # This is the default type for internal services
+      port: 3306  # Exposing MySQL service on port 3306
+      targetPort: 3306
+  type: ClusterIP  # Internal access to the d
