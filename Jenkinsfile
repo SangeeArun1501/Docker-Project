@@ -24,5 +24,13 @@ pipeline {
                 }
             }
         }
+        stage('Build SQL Image') {
+            steps {
+                script {
+                    // Build the Docker image for the SQL application from the 'sql' directory
+                    sh "docker build -t ${DOCKER_IMAGE_SQL}:${DOCKER_TAG} ./sql"
+                }
+            }
+        }
     }
 }
