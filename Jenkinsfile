@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = "sangeetha1501/pythonflaskapp"
         DOCKER_IMAGE_SQL = "sangeetha1501/sqlapp"
         DOCKER_TAG = "latest"
-        kubeConfigId = '/home/sakshara479/.kube/config' 
+        KUBECONFIG = '/home/sakshara479/.kube/config' 
         DOCKER_CREDENTIALS = 'dockerhub'
     }
 
